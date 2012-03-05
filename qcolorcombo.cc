@@ -93,6 +93,7 @@ void QColorCombo::combo_currentIndexChanged(int index) {
     // custom color option
     m_color = QColorDialog::getColor(m_color, this);
     m_colorName = m_color.name();
+    addColor(m_color);
   } else {
     m_colorName = m_combo->itemText(index);
     m_color = m_combo->itemData(index).value<QColor>();
