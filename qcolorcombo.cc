@@ -89,3 +89,64 @@ void QColorCombo::combo_currentIndexChanged(int index) {
   emit colorChanged(m_color);
 }
 
+
+void QColorCombo::addColor(QColor color) {
+  int index = m_combo->findData(color);
+
+  if (index == -1) {
+    // color doesn't exist in our dropdown list; create new entry
+    QString colorName = color.name().toUpper();
+    m_combo->insertItem(1, createIcon(colorName), colorName, color);
+    m_combo->setCurrentIndex(1);
+  } else {
+    // color already exists in our dropdown list
+    m_combo->setCurrentIndex(index);
+  }
+}
+
+
+void QColorCombo::addColor(QString colorName) {
+  colorName = colorName.toUpper();
+
+  int index = m_combo->findText(colorName);
+
+  if (index == -1) {
+    // color doesn't exist in our dropdown list; create new entry
+    m_combo->insertItem(1, createIcon(colorName), colorName, QColor(colorName));
+    m_combo->setCurrentIndex(1);
+  } else {
+    // color already exists in our dropdown list
+    m_combo->setCurrentIndex(index);
+  }
+}
+
+
+QString QColorCombo::getColorName() {
+  return m_colorName;
+}
+
+
+void QColorCombo::setColorName(QString colorName) {
+  if (!colorName.isEmpty()) {
+    if (QColor(colorName).isValid()) {
+      m_colorName = colorName;
+      m_color = QColor(colorName);
+      addColor(colorName);
+    }
+  }
+}
+
+
+QColor QColorCombo::getColor() {
+  return m_color;
+}
+
+
+void QColorCombo::setColor(QColor color) {
+  if (color.isValid()) {
+    m_colorName = color.name();
+    m_color = color;
+    addColor(color);
+  }
+}
+
