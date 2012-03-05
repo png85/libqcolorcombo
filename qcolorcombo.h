@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QFrame>
 #include <QComboBox>
+#include <QColor>
+#include <QIcon>
 
 class QColorCombo : public QFrame {
   Q_OBJECT
@@ -12,7 +14,10 @@ class QColorCombo : public QFrame {
 
  protected:
   QComboBox* m_combo;
+  QString m_colorName;
+  QColor m_color;
 
+  QIcon createIcon(QString color);
 };
 
 #endif // !QCOLORCOMBO_H
