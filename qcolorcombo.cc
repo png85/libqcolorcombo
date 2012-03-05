@@ -1,6 +1,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QHBoxLayout>
+#include <QColorDialog>
 
 #include "QColorCombo"
 
@@ -56,6 +57,8 @@ QColorCombo::QColorCombo(QWidget* parent) :
   }
 
   m_combo->setCurrentIndex(1);
+  QObject::connect(m_combo, SIGNAL(currentIndexChanged(int)),
+		   this, SLOT(combo_currentIndexChanged(int)));
 
   hbox->addWidget(m_combo);
 
@@ -70,3 +73,19 @@ QIcon QColorCombo::createIcon(QString color) {
 
   return QIcon(p);
 }
+
+
+void QColorCombo::combo_currentIndexChanged(int index) {
+  if (index == 0) {
+    // custom color option
+    m_color = QColorDialog::getColor(m_color, this);
+    m_colorName = m_color.name();
+  } else {
+    m_colorName = m_combo->itemText(index);
+    m_color = m_combo->itemData(index).value<QColor>();
+  }
+
+  emit colorChanged(m_colorName);
+  emit colorChanged(m_color);
+}
+

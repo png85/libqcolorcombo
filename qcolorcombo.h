@@ -18,6 +18,14 @@ class QColorCombo : public QFrame {
   QColor m_color;
 
   QIcon createIcon(QString color);
+
+ protected slots:
+  void combo_currentIndexChanged(int index);
+
+ signals:
+  void colorChanged(QString colorName);
+  void colorChanged(QColor color);
+
 };
 
 #endif // !QCOLORCOMBO_H
