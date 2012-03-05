@@ -20,8 +20,8 @@ QColorCombo::QColorCombo(QWidget* parent) :
     qCritical() << "QColorCombo::QColorCombo: "
 		<< "Caught std::bad_alloc when trying to create "
 		<< "new QHBoxLayout: " << ex.what();
-    QMessageBox::critical(this, "Fatal error!",
-			  "Unable to allocate memory for new QHBoxLayout!",
+    QMessageBox::critical(this, tr("Fatal error!"),
+			  tr("Unable to allocate memory for new QHBoxLayout!"),
 			  QMessageBox::Ok, QMessageBox::Ok);
     exit(1);
   }
@@ -36,13 +36,13 @@ QColorCombo::QColorCombo(QWidget* parent) :
     qCritical() << "QColorCombo::QColorCombo: "
 		<< "Caught std::bad_alloc when trying to create "
 		<< "new QComboBox: " << ex.what();
-    QMessageBox::critical(this, "Fatal error!",
-			  "Unable to allocate memory for new QComboBox!",
+    QMessageBox::critical(this, tr("Fatal error!"),
+			  tr("Unable to allocate memory for new QComboBox!"),
 			  QMessageBox::Ok, QMessageBox::Ok);
     exit(1);
   }
 
-  m_combo->addItem("Custom color...");
+  m_combo->addItem(tr("Custom color..."));
 
   // add default colors to the combo box
   QStringList colorList;
