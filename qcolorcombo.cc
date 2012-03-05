@@ -66,6 +66,11 @@ QColorCombo::QColorCombo(QWidget* parent) :
 }
 
 
+/// \brief Create icon for a given color
+///
+/// Creates a 32x32 pixel icon for the given color name.
+///
+/// \param color Color name in the form of '#RRGGBB'
 QIcon QColorCombo::createIcon(QString color) {
   QPixmap p(32, 32);
 
@@ -75,6 +80,14 @@ QIcon QColorCombo::createIcon(QString color) {
 }
 
 
+/// \brief Handler for combo box selection changes
+///
+/// This gets executed when the user selects a new color from our
+/// combo box. If the user selects the option to use a custom color
+/// we show them a QColorDialog and add the custom color to the top
+/// of our color list afterwards.
+///
+/// \param index Index of the currently selected color in m_combo
 void QColorCombo::combo_currentIndexChanged(int index) {
   if (index == 0) {
     // custom color option
@@ -90,6 +103,7 @@ void QColorCombo::combo_currentIndexChanged(int index) {
 }
 
 
+/// \brief Add color to m_combo
 void QColorCombo::addColor(QColor color) {
   int index = m_combo->findData(color);
 
@@ -105,6 +119,7 @@ void QColorCombo::addColor(QColor color) {
 }
 
 
+/// \brief Add color to m_combo
 void QColorCombo::addColor(QString colorName) {
   colorName = colorName.toUpper();
 
@@ -121,11 +136,13 @@ void QColorCombo::addColor(QString colorName) {
 }
 
 
+/// \brief Get name of currently selected color
 QString QColorCombo::getColorName() {
   return m_colorName;
 }
 
 
+/// \brief Set currently selected color
 void QColorCombo::setColorName(QString colorName) {
   if (!colorName.isEmpty()) {
     if (QColor(colorName).isValid()) {
@@ -137,11 +154,13 @@ void QColorCombo::setColorName(QString colorName) {
 }
 
 
+/// \brief Get currently selected color
 QColor QColorCombo::getColor() {
   return m_color;
 }
 
 
+/// \brief Set currently selected color
 void QColorCombo::setColor(QColor color) {
   if (color.isValid()) {
     m_colorName = color.name();
