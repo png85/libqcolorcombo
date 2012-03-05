@@ -19,6 +19,9 @@ QT4_WRAP_CPP(QCOLORCOMBO_MOC_SOURCES ${QCOLORCOMBO_MOC_HEADERS})
 
 add_library(QColorCombo ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES})
 
+install(TARGETS QColorCombo ARCHIVE DESTINATION lib)
+install(FILES ${QCOLORCOMBO_HEADERS} DESTINATION include)
+
 #
 # example: Simple example program to demonstrate QColorCombo
 set(EXAMPLE_SOURCES example.cc ExampleWindow.cc)
