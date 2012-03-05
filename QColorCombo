@@ -1,0 +1,4 @@
+#ifndef QCOLORCOMBO
+#define QCOLORCOMBO
+#include "qcolorcombo.h"
+#endif // !QCOLORCOMBO
