@@ -8,7 +8,7 @@
 
 QColorCombo::QColorCombo(QWidget* parent) :
   QFrame(parent), m_combo(NULL),
-  m_colorName("#000000"), m_color("#00000") {
+  m_colorName("#000000"), m_color("#000000") {
 
   QHBoxLayout* hbox = NULL;
   try {
