@@ -69,7 +69,7 @@ QColorCombo::QColorCombo(QWidget* parent) :
 ///
 /// Creates a 32x32 pixel icon for the given color name.
 ///
-/// \param color Color name in the form of '#RRGGBB'
+/// \param color Color name in the form of \a #RRGGBB
 QIcon QColorCombo::createIcon(QString color) {
   QPixmap p(32, 32);
 
