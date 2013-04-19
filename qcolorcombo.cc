@@ -6,6 +6,13 @@
 #include "QColorCombo"
 
 
+/** \brief Create new QColorCombo instance
+ *
+ * Initializes a new QColorCombo widget that can be used to provide the user
+ * with a color selection combo box.
+ *
+ * \param parent Parent QWidget that owns the newly created QColorCombo
+ */
 QColorCombo::QColorCombo(QWidget* parent) :
     QFrame(parent), m_combo(NULL), m_color("#000000"), m_showColorNames(true), m_allowCustomColors(true)
  {
@@ -103,6 +110,17 @@ void QColorCombo::combo_currentIndexChanged(int index) {
 
 
 
+/** \brief Set list of selectable colors
+ *
+ * Updates the list of selectable colors to a new value and updates the underlying combo box.
+ * If the \a allowCusomColors property is \a true and entry to select a custom color will
+ * be added to the end of the dropdown options.
+ *
+ * \param colors List of colors to show in selection box
+ *
+ * \see m_colors
+ * \see colors
+ */
 void QColorCombo::setColors(QList<QColor> colors)  {
     m_combo->clear();
 
@@ -119,6 +137,17 @@ void QColorCombo::setColors(QList<QColor> colors)  {
 }
 
 
+/** \brief Set new selected color
+ *
+ * Sets the currently selected color to a new value. If the color doesn't exist in the list of
+ * selectable colors it'll automatically be appended unless the \a allowCustomColors property
+ * is set to \a false.
+ *
+ * \param color New \a QColor to select in combo box
+ *
+ * \see m_selectedColor
+ * \see selectedColor
+ */
 void QColorCombo::setSelectedColor(QColor color) {
     if (!m_colors.contains(color)) {
         if (!m_allowCustomColors)
@@ -132,6 +161,13 @@ void QColorCombo::setSelectedColor(QColor color) {
 }
 
 
+/** \brief Specify wether color names are shown
+ *
+ * Sets the \a showColorNames property to the given value.
+ *
+ * \see m_showColorNames
+ * \see showColorNames
+ */
 void QColorCombo::setShowColorNames(bool show) {
     if (show != m_showColorNames) {
         m_showColorNames = show;
@@ -140,6 +176,13 @@ void QColorCombo::setShowColorNames(bool show) {
 }
 
 
+/** \brief Specify wether custom color selection is enabled
+ *
+ * Sets the \a allowCustomColors property to the given value.
+ *
+ * \see m_allowCustomColors
+ * \see allowCustomColors
+ */
 void QColorCombo::setAllowCustomColors(bool allow) {
     if (allow != m_allowCustomColors) {
         m_allowCustomColors = allow;
