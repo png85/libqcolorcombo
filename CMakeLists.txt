@@ -36,14 +36,14 @@ set(QCOLORCOMBO_SOURCES QColorCombo.cc)
 set(QCOLORCOMBO_MOC_HEADERS QColorCombo.h)
 set(QCOLORCOMBO_HEADERS ${QCOLORCOMBO_MOC_HEADERS})
 QT4_WRAP_CPP(QCOLORCOMBO_MOC_SOURCES ${QCOLORCOMBO_MOC_HEADERS})
-QT4_CREATE_TRANSLATION(QCOLORCOMBO_QM_FILES ${QCOLORCOMBO_SOURCES} QColorCombo.ts)
+QT4_CREATE_TRANSLATION(QCOLORCOMBO_QM_FILES_UPDATE ${QCOLORCOMBO_SOURCES} QColorCombo.ts)
 QT4_ADD_TRANSLATION(QCOLORCOMBO_QM_FILES QColorCombo-en_US.ts
                                          QColorCombo-de_DE.ts)
 add_library(QColorCombo ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_QM_FILES})
 install(TARGETS QColorCombo ARCHIVE DESTINATION lib)
 install(FILES ${QCOLORCOMBO_HEADERS} DESTINATION include)
 install(FILES ${QCOLORCOMBO_QM_FILES} DESTINATION translations)
-
+install(FILES ${QCOLORCOMBO_QM_FILES_UPDATE} DESTINATION translations)
 
 #
 # QColorComboPlugin: Qt Designer plugin to use QColorCombo in .ui files
@@ -57,13 +57,14 @@ if(QCOLORCOMBO_WITH_DESIGNER_PLUGIN)
   endif(WIN32)
   set(libQColorComboPlugin_MOC_HDRS QColorComboDesignerFactory.h)
   set(libQColorComboPlugin_SRCS QColorComboDesignerFactory.cc)
-  QT4_CREATE_TRANSLATION(libQColorComboPlugin_QM_SRCS ${libQColorComboPlugin_SRCS} QColorComboPlugin.ts)
-  QT4_ADD_TRANSLATION(libQColorComboPlugin_QM_SRCS QColorComboPlugin.ts)
+  QT4_CREATE_TRANSLATION(libQColorComboPlugin_QM_SRCS_UPDATE ${libQColorComboPlugin_SRCS} QColorComboPlugin.ts)
+  QT4_ADD_TRANSLATION(libQColorComboPlugin_QM_SRCS QColorComboPlugin-en_US.ts QColorComboPlugin-de_DE.ts)
   add_library(QColorComboPlugin SHARED ${libQColorComboPlugin_MOC_SRCS} ${libQColorComboPlugin_SRCS} ${libQColorComboPlugin_QM_SRCS}
                                        ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_PM_FILES})
   target_link_libraries(QColorComboPlugin ${QT_LIBRARIES})
   install(TARGETS QColorComboPlugin DESTINATION lib)
   install(FILES ${libQColorComboPlugin_QM_SRCS} DESTINATION translations)
+  install(FILES ${libQColorComboPlugin_QM_SRCS_UPDATE} DESTINATION translations)
   #install(TARGETS QColorComboPlugin DESTINATION ${QT_PLUGINS_DIR}/designer)
 endif(QCOLORCOMBO_WITH_DESIGNER_PLUGIN)
 
