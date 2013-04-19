@@ -18,8 +18,8 @@ include(${QT_USE_FILE})
 
 #
 # libQtColorCombo: library that contains our widget
-set(QCOLORCOMBO_SOURCES qcolorcombo.cc)
-set(QCOLORCOMBO_MOC_HEADERS qcolorcombo.h)
+set(QCOLORCOMBO_SOURCES QColorCombo.cc)
+set(QCOLORCOMBO_MOC_HEADERS QColorCombo.h)
 set(QCOLORCOMBO_HEADERS QColorCombo ${QCOLORCOMBO_MOC_HEADERS})
 set(QCOLORCOMBO_TS qcolorcombo.ts)
 

@@ -14,7 +14,7 @@
 #include <QColorDialog>
 
 #include "nullptr.h"
-#include "QColorCombo"
+#include "QColorCombo.h"
 
 
 /** \brief Create new QColorCombo instance

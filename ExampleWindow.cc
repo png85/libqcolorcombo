@@ -3,7 +3,7 @@
 #include <QLabel>
 #include <QDebug>
 
-#include "QColorCombo"
+#include "QColorCombo.h"
 #include "ExampleWindow.h"
 
 ExampleWindow::ExampleWindow(QWidget* parent) :
