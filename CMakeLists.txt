@@ -45,12 +45,29 @@ else(QCOLORCOMBO_UPDATE_TRANSLATIONS)
 endif(QCOLORCOMBO_UPDATE_TRANSLATIONS)
 
 add_library(QColorCombo ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_QM_FILES})
-
-
 install(TARGETS QColorCombo ARCHIVE DESTINATION lib)
 install(FILES ${QCOLORCOMBO_HEADERS} DESTINATION include)
 install(FILES ${QCOLORCOMBO_QM_FILES} DESTINATION translations)
 
+
+#
+# QColorComboPlugin: Qt Designer plugin to use QColorCombo in .ui files
+option(QCOLORCOMBO_WITH_DESIGNER_PLUGIN "Build plugin to use widget in Qt Designer" ON)
+if(QCOLORCOMBO_WITH_DESIGNER_PLUGIN)
+  add_definitions(${QT_DEFINITIONS})
+  add_definitions(-DQT_PLUGIN)
+  add_definitions(-DQT_SHARED)
+  if(WIN32)
+    add_definitions(-DQT_DLL)
+  endif(WIN32)
+  set(libQColorComboPlugin_MOC_HDRS QColorComboDesignerFactory.h)
+  set(libQColorComboPlugin_SRCS QColorComboDesignerFactory.cc)
+  QT4_WRAP_CPP(libQColorComboPlugin_MOC_SRCS ${libQColorComboPlugin_MOC_HDRS})
+  add_library(QColorComboPlugin SHARED ${libQColorComboPlugin_MOC_SRCS} ${libQColorComboPlugin_SRCS}
+                                       ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_PM_FILES})
+  target_link_libraries(QColorComboPlugin ${QT_LIBRARIES})
+  install(TARGETS QColorComboPlugin DESTINATION ${QT_PLUGINS_DIR}/designer)
+endif(QCOLORCOMBO_WITH_DESIGNER_PLUGIN)
 
 #
 # example: Simple example program to demonstrate QColorCombo
