@@ -4,6 +4,13 @@
 project(libqcolorcombo)
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+include(CheckCXX11Features)
+foreach(flag ${CXX11_FEATURE_LIST})
+  add_definitions(-D${flag})
+endforeach()
+
 #
 # Locate Qt4 headers/libraries
 find_package(Qt4 REQUIRED)
