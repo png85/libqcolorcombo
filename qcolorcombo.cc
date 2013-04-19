@@ -7,7 +7,7 @@
 
 
 QColorCombo::QColorCombo(QWidget* parent) :
-    QFrame(parent), m_combo(NULL), m_color("#000000")
+    QFrame(parent), m_combo(NULL), m_color("#000000"), m_showColorNames(true), m_allowCustomColors(true)
  {
 
     QHBoxLayout* hbox = NULL;
@@ -51,8 +51,6 @@ QColorCombo::QColorCombo(QWidget* parent) :
                      this, SLOT(combo_currentIndexChanged(int)));
 
     hbox->addWidget(m_combo);
-
-
 
     QFrame::setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
     QFrame::setLineWidth(1);
@@ -104,21 +102,18 @@ void QColorCombo::combo_currentIndexChanged(int index) {
 }
 
 
-/// \brief Get currently selected color
-QColor QColorCombo::selectedColor() {
-    return m_color;
-}
-
-
 
 void QColorCombo::setColors(QList<QColor> colors)  {
     m_combo->clear();
 
     m_colors = colors;
     foreach (QColor color, m_colors)
-        m_combo->addItem(createIcon(color.name()), color.name().toUpper(), color.name());
+        m_combo->addItem(createIcon(color.name()),
+                         m_showColorNames == true ? color.name().toUpper() : QString(),
+                         color.name());
 
-    m_combo->addItem(QIcon::fromTheme("go-jump"), tr("Custom..."), "[CUSTOM]");
+    if (m_allowCustomColors)
+        m_combo->addItem(QIcon::fromTheme("go-jump"), tr("Custom..."), "[CUSTOM]");
 
     setSelectedColor(m_color);
 }
@@ -126,9 +121,28 @@ void QColorCombo::setColors(QList<QColor> colors)  {
 
 void QColorCombo::setSelectedColor(QColor color) {
     if (!m_colors.contains(color)) {
+        if (!m_allowCustomColors)
+            return;
+
         m_colors << color;
         setColors(m_colors);
     }
 
     m_combo->setCurrentIndex(m_colors.indexOf(color));
+}
+
+
+void QColorCombo::setShowColorNames(bool show) {
+    if (show != m_showColorNames) {
+        m_showColorNames = show;
+        setColors(m_colors);
+    }
+}
+
+
+void QColorCombo::setAllowCustomColors(bool allow) {
+    if (allow != m_allowCustomColors) {
+        m_allowCustomColors = allow;
+        setColors(m_colors);
+    }
 }
