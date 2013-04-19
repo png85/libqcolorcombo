@@ -22,7 +22,7 @@ QWidget* QColorComboDesignerFactory::createWidget(QWidget *parent) {
 
     catch (std::bad_alloc& ex) {
         qCritical() << "Caught exception when trying to allocat new QColorCombo in" << Q_FUNC_INFO << ":" << ex.what();
-        QString message = tr("Caught exception when trying to create new QBrowseButton"
+        QString message = tr("Caught exception when trying to create new QColorCombo"
                              "instance in %1: %2").arg(Q_FUNC_INFO, ex.what());
         QMessageBox::critical(parent, tr("Out of memory"), message, QMessageBox::Ok);
         throw;
