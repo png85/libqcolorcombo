@@ -10,28 +10,26 @@
 class QColorCombo : public QFrame {
     Q_OBJECT
 
-    Q_PROPERTY(QString colorName READ getColorName)
-    Q_PROPERTY(QColor selectedColor READ getColor)
+    Q_PROPERTY(QColor selectedColor READ selectedColor WRITE setSelectedColor)
+    Q_PROPERTY(QList<QColor> colors READ colors WRITE setColors)
 
 public:
     QColorCombo(QWidget* parent=0);
 
+    QList<QColor> colors() const { return m_colors; }
+    QColor selectedColor();
+
 protected:
     QComboBox* m_combo;
-    QString m_colorName;
     QColor m_color;
-    bool m_showColorNames;
+
+    QList<QColor> m_colors;
 
     static QIcon createIcon(QString color);
-    void addColor(QColor color);
-    void addColor(QString colorName);
 
-public:
-    QString getColorName();
-    void setColorName(QString colorName);
-
-    QColor getColor();
-    void setColor(QColor color);
+public slots:
+    void setColors(QList<QColor> colors);
+    void setSelectedColor(QColor color);
 
 protected slots:
     void combo_currentIndexChanged(int index);
