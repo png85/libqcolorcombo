@@ -8,32 +8,37 @@
 #include <QIcon>
 
 class QColorCombo : public QFrame {
-  Q_OBJECT
- public:
-  QColorCombo(QWidget* parent=0);
+    Q_OBJECT
 
- protected:
-  QComboBox* m_combo;
-  QString m_colorName;
-  QColor m_color;
+    Q_PROPERTY(QString colorName READ getColorName)
+    Q_PROPERTY(QColor selectedColor READ getColor)
 
-  QIcon createIcon(QString color);
-  void addColor(QColor color);
-  void addColor(QString colorName);
+public:
+    QColorCombo(QWidget* parent=0);
 
- public:
-  QString getColorName();
-  void setColorName(QString colorName);
+protected:
+    QComboBox* m_combo;
+    QString m_colorName;
+    QColor m_color;
+    bool m_showColorNames;
 
-  QColor getColor();
-  void setColor(QColor color);
+    static QIcon createIcon(QString color);
+    void addColor(QColor color);
+    void addColor(QString colorName);
 
- protected slots:
-  void combo_currentIndexChanged(int index);
+public:
+    QString getColorName();
+    void setColorName(QString colorName);
 
- signals:
-  void colorChanged(QString colorName);
-  void colorChanged(QColor color);
+    QColor getColor();
+    void setColor(QColor color);
+
+protected slots:
+    void combo_currentIndexChanged(int index);
+
+signals:
+    void colorChanged(QString colorName);
+    void colorChanged(QColor color);
 
 };
 
