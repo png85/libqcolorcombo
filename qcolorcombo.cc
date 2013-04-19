@@ -1,8 +1,19 @@
+/** \file
+ *
+ * \brief Implementation of \a QColorCombo
+ *
+ * This file provides the implementation of the \a QColorCombo class.
+ *
+ * \author Peter 'png' Hille <peter@das-system-networks.de>
+ *
+ * \version 1.0
+ */
 #include <QMessageBox>
 #include <QDebug>
 #include <QHBoxLayout>
 #include <QColorDialog>
 
+#include "nullptr.h"
 #include "QColorCombo"
 
 
@@ -14,10 +25,21 @@
  * \param parent Parent QWidget that owns the newly created QColorCombo
  */
 QColorCombo::QColorCombo(QWidget* parent) :
-    QFrame(parent), m_combo(NULL), m_color("#000000"), m_showColorNames(true), m_allowCustomColors(true)
- {
+    QFrame(parent), m_combo(nullptr), m_color("#000000"), m_showColorNames(true), m_allowCustomColors(true)
+{
+    setupUi();
+}
 
-    QHBoxLayout* hbox = NULL;
+
+/** \brief Initialize sub-widgets
+ *
+ * Initializes the sub-widgets that belong to the QColorCombo instance.
+ *
+ * \internal This helper method is called from the class constructor and shouldn't be needed
+ * elsewhere.
+ */
+void QColorCombo::setupUi() {
+    QHBoxLayout* hbox = nullptr;
     try {
         hbox = new QHBoxLayout(this);
     }
@@ -34,13 +56,10 @@ QColorCombo::QColorCombo(QWidget* parent) :
     }
 
     catch (std::bad_alloc& ex) {
-        qCritical() << "QColorCombo::QColorCombo: "
-                    << "Caught std::bad_alloc when trying to create "
-                    << "new QComboBox: " << ex.what();
-        QMessageBox::critical(this, tr("Fatal error!"),
-                              tr("Unable to allocate memory for new QComboBox!"),
-                              QMessageBox::Ok, QMessageBox::Ok);
-        exit(1);
+        qCritical() << "Caught exception when trying to create new QComboBox in" << Q_FUNC_INFO << ":" << ex.what();
+        QString message = tr("Caught exception when trying to allocate new QComboBox in %1: %2").arg(Q_FUNC_INFO, ex.what());
+        QMessageBox::critical(this, tr("Out of memory"), message, QMessageBox::Ok);
+        throw;
     }
 
     m_combo->setEditable(false);
@@ -61,7 +80,7 @@ QColorCombo::QColorCombo(QWidget* parent) :
 
     QFrame::setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
     QFrame::setLineWidth(1);
-    setLayout(hbox);
+    QFrame::setLayout(hbox);
 }
 
 
@@ -107,7 +126,6 @@ void QColorCombo::combo_currentIndexChanged(int index) {
     emit colorChanged(m_color);
     emit colorChanged(m_color.name());
 }
-
 
 
 /** \brief Set list of selectable colors

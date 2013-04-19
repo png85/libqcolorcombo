@@ -1,3 +1,13 @@
+/** \file
+ *
+ * \brief Declaration of \a QColorCombo
+ *
+ * This file provides the declaration of the \a QColorCombo class.
+ *
+ * \author Peter 'png' Hille <peter@das-system-networks.de>
+ *
+ * \version 1.0
+ */
 #ifndef QCOLORCOMBO_H
 #define QCOLORCOMBO_H 1
 
@@ -90,6 +100,8 @@ private:
      * colors.
      */
     bool m_allowCustomColors;
+
+    void setupUi();
 
 protected:
     static QIcon createIcon(QString color);
