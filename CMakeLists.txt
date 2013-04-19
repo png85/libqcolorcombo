@@ -11,6 +11,20 @@ foreach(flag ${CXX11_FEATURE_LIST})
   add_definitions(-D${flag})
 endforeach()
 
+if(CMAKE_COMPILER_IS_GNUCXX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++0x")
+  list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS)
+
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -ggdb")
+  list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS_DEBUG)
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
+if(MSVC)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /W4")
+  list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS_DEBUG)
+endif(MSVC)
+
+
 #
 # Locate Qt4 headers/libraries
 find_package(Qt4 REQUIRED)

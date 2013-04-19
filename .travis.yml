@@ -7,6 +7,6 @@ script:
   - mkdir build
   - cd build
   - cmake ..
-  - cmake --build . --target all -- VERBOSE=1
+  - cmake --build . --target all --
 
 
