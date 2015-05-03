@@ -5,7 +5,8 @@
     <name>QColorComboDesignerFactory</name>
     <message>
         <location filename="QColorComboDesignerFactory.cc" line="25"/>
-        <source>Caught exception when trying to create new QBrowseButtoninstance in %1: %2</source>
+        <source>Caught exception when trying to create new QColorComboinstance in %1: %2</source>
+        <oldsource>Caught exception when trying to create new QBrowseButtoninstance in %1: %2</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
