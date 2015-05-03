@@ -79,7 +79,7 @@ QT4_ADD_TRANSLATION(QCOLORCOMBO_QM_FILES QColorCombo-en_US.ts
                                          QColorCombo-de_DE.ts)
 add_library(QColorCombo ${LIB_TYPE} ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_QM_FILES} ${QCOLORCOMBO_QM_FILES_UPDATE})
 if(UNIX AND QColorCombo_BUILD_SHARED_LIBS)
-    target_set_properties(QColorCombo PROPERTIES SONAME "QColorCombo" SOVERSION ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR})
+    set_target_properties(QColorCombo PROPERTIES SONAME "QColorCombo" SOVERSION ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR})
 endif(UNIX AND QColorCombo_BUILD_SHARED_LIBS)
 target_link_libraries(QColorCombo ${QT_LIBRARIES})
 generate_export_header(QColorCombo BASE_NAME QColorCombo
