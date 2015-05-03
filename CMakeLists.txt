@@ -1,7 +1,7 @@
 #
 # CMakeLists.txt for libqcolorcombo
 #
-project(libqcolorcombo)
+project(QColorCombo)
 cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -35,9 +35,22 @@ endforeach()
 
 #
 # User configurable build options
+option(QColorCombo_BUILD_AS_SUBMODULE "Build QColorCombo as git submodule?" OFF)
 option(QColorCombo_BUILD_SHARED_LIBS "Build QColorCombo as shared library?" ON)
 option(QColorCombo_WITH_DESIGNER_PLUGIN "Build plugin to use QColorCombo with Qt Designer?" ON)
 option(QColorCombo_WITH_EXAMPLE "Build small example program for QColorCombo?" ON)
+
+if(NOT QColorCombo_BUILD_AS_SUBMODULE)
+    set(CPACK_PACKAGE_DESCRIPTION "QColorCombo widget for Qt4")
+    set(CPACK_PACKAGE_VERSION_MAJOR 1)
+    set(CPACK_PACKAGE_VERSION_MINOR 0)
+    set(CPACK_PACKAGE_VERSION_PATCH 1)
+    if(WIN32)
+        set(CPACK_GENERATOR "ZIP")
+    endif(WIN32)
+    include(CPack)
+endif(NOT QColorCombo_BUILD_AS_SUBMODULE)
+
 
 #
 # Set library type depending on user choice
@@ -64,7 +77,11 @@ QT4_WRAP_CPP(QCOLORCOMBO_MOC_SOURCES ${QCOLORCOMBO_MOC_HEADERS})
 QT4_CREATE_TRANSLATION(QCOLORCOMBO_QM_FILES_UPDATE ${QCOLORCOMBO_SOURCES} QColorCombo.ts)
 QT4_ADD_TRANSLATION(QCOLORCOMBO_QM_FILES QColorCombo-en_US.ts
                                          QColorCombo-de_DE.ts)
-add_library(QColorCombo ${LIB_TYPE} ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_QM_FILES})
+add_library(QColorCombo ${LIB_TYPE} ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_QM_FILES} ${QCOLORCOMBO_QM_FILES_UPDATE})
+if(UNIX AND QColorCombo_BUILD_SHARED_LIBS)
+    target_set_properties(QColorCombo PROPERTIES SONAME "QColorCombo" SOVERSION ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR})
+endif(UNIX AND QColorCombo_BUILD_SHARED_LIBS)
+target_link_libraries(QColorCombo ${QT_LIBRARIES})
 generate_export_header(QColorCombo BASE_NAME QColorCombo
                                    EXPORT_MACRO_NAME QColorCombo_EXPORT
                                    EXPORT_FILE_NAME QColorCombo_Export.h
@@ -88,11 +105,11 @@ if(QColorCombo_WITH_DESIGNER_PLUGIN)
   endif(WIN32)
   set(libQColorComboPlugin_MOC_HDRS QColorComboDesignerFactory.h)
   set(libQColorComboPlugin_SRCS QColorComboDesignerFactory.cc)
+  qt4_wrap_cpp(libQColorComboPlugin_MOC_SRCS ${libQColorComboPlugin_MOC_HDRS})
   QT4_CREATE_TRANSLATION(libQColorComboPlugin_QM_SRCS_UPDATE ${libQColorComboPlugin_SRCS} QColorComboPlugin.ts)
   QT4_ADD_TRANSLATION(libQColorComboPlugin_QM_SRCS QColorComboPlugin-en_US.ts QColorComboPlugin-de_DE.ts)
-  add_library(QColorComboPlugin SHARED ${libQColorComboPlugin_MOC_SRCS} ${libQColorComboPlugin_SRCS} ${libQColorComboPlugin_QM_SRCS}
-                                       ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_PM_FILES})
-  target_link_libraries(QColorComboPlugin ${QT_LIBRARIES})
+  add_library(QColorComboPlugin SHARED ${libQColorComboPlugin_MOC_SRCS} ${libQColorComboPlugin_SRCS} ${libQColorComboPlugin_QM_SRCS} ${libQColorComboPlugin_QM_SRCS_UPDATE})
+  target_link_libraries(QColorComboPlugin QColorCombo ${QT_LIBRARIES})
   install(TARGETS QColorComboPlugin DESTINATION lib)
   install(FILES ${libQColorComboPlugin_QM_SRCS} DESTINATION translations)
   install(FILES ${libQColorComboPlugin_QM_SRCS_UPDATE} DESTINATION translations)
