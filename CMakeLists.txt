@@ -6,24 +6,49 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
+#
+# Enable C++11 for GCC builds
+if(CMAKE_COMPILER_IS_GNUCXX)
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag("-std=c++11" GCC_stdcxx11)
+    check_cxx_compiler_flag("-std=c++0x" GCC_stdcxx0x)
+
+    if(GCC_stdcxx11)
+        # Compiler supports -std=c++11
+        message(STATUS "Using -std=c++11 to enable C++11 in GCC")
+        add_definitions(-std=c++11)
+    elseif(GCC_stdcxx0x)
+        # Compiler doesn't support -std=c++11 but -std=c++0x
+        message(STATUS "Using -std=c++0x to enable C++11 in GCC")
+        add_definitions(-std=c++0x)
+    else()
+        # Neither -std=c++11 nor -std=c++0x are supported
+        message(WARNING "Failed to determine C++11 flag for GCC :-(")
+    endif()
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
 include(CheckCXX11Features)
 foreach(flag ${CXX11_FEATURE_LIST})
   add_definitions(-D${flag})
 endforeach()
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -std=c++0x")
-  list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS)
 
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -ggdb")
-  list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS_DEBUG)
-endif(CMAKE_COMPILER_IS_GNUCXX)
+#
+# User configurable build options
+option(QColorCombo_BUILD_SHARED_LIBS "Build QColorCombo as shared library?" ON)
+option(QColorCombo_WITH_DESIGNER_PLUGIN "Build plugin to use QColorCombo with Qt Designer?" ON)
+option(QColorCombo_WITH_EXAMPLE "Build small example program for QColorCombo?" ON)
 
-if(MSVC)
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /W4")
-  list(REMOVE_DUPLICATES CMAKE_CXX_FLAGS_DEBUG)
-endif(MSVC)
+#
+# Set library type depending on user choice
+if(QColorCombo_BUILD_SHARED_LIBS)
+    set(LIB_TYPE SHARED)
+else(QColorCombo_BUILD_SHARED_LIBS)
+    set(LIB_TYPE STATIC)
+endif(QColorCombo_BUILD_SHARED_LIBS)
 
+include(GenerateExportHeader)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 #
 # Locate Qt4 headers/libraries
@@ -39,16 +64,22 @@ QT4_WRAP_CPP(QCOLORCOMBO_MOC_SOURCES ${QCOLORCOMBO_MOC_HEADERS})
 QT4_CREATE_TRANSLATION(QCOLORCOMBO_QM_FILES_UPDATE ${QCOLORCOMBO_SOURCES} QColorCombo.ts)
 QT4_ADD_TRANSLATION(QCOLORCOMBO_QM_FILES QColorCombo-en_US.ts
                                          QColorCombo-de_DE.ts)
-add_library(QColorCombo STATIC ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_QM_FILES})
-install(TARGETS QColorCombo ARCHIVE DESTINATION lib)
+add_library(QColorCombo ${LIB_TYPE} ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_QM_FILES})
+generate_export_header(QColorCombo BASE_NAME QColorCombo
+                                   EXPORT_MACRO_NAME QColorCombo_EXPORT
+                                   EXPORT_FILE_NAME QColorCombo_Export.h
+                                   STATIC_DEFINE QColorCombo_BUILT_AS_STATIC)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/QColorCombo_Export.h DESTINATION include)
+install(TARGETS QColorCombo ARCHIVE DESTINATION lib
+                            LIBRARY DESTINATION lib
+                            RUNTIME DESTINATION bin)
 install(FILES ${QCOLORCOMBO_HEADERS} DESTINATION include)
 install(FILES ${QCOLORCOMBO_QM_FILES} DESTINATION translations)
 install(FILES ${QCOLORCOMBO_QM_FILES_UPDATE} DESTINATION translations)
 
 #
 # QColorComboPlugin: Qt Designer plugin to use QColorCombo in .ui files
-option(QCOLORCOMBO_WITH_DESIGNER_PLUGIN "Build plugin to use widget in Qt Designer" ON)
-if(QCOLORCOMBO_WITH_DESIGNER_PLUGIN)
+if(QColorCombo_WITH_DESIGNER_PLUGIN)
   add_definitions(${QT_DEFINITIONS})
   add_definitions(-DQT_PLUGIN)
   add_definitions(-DQT_SHARED)
@@ -65,17 +96,16 @@ if(QCOLORCOMBO_WITH_DESIGNER_PLUGIN)
   install(TARGETS QColorComboPlugin DESTINATION lib)
   install(FILES ${libQColorComboPlugin_QM_SRCS} DESTINATION translations)
   install(FILES ${libQColorComboPlugin_QM_SRCS_UPDATE} DESTINATION translations)
-  #install(TARGETS QColorComboPlugin DESTINATION ${QT_PLUGINS_DIR}/designer)
-endif(QCOLORCOMBO_WITH_DESIGNER_PLUGIN)
+  install(TARGETS QColorComboPlugin DESTINATION ${QT_PLUGINS_DIR}/designer)
+endif(QColorCombo_WITH_DESIGNER_PLUGIN)
 
 #
 # example: Simple example program to demonstrate QColorCombo
-option(QCOLORCOMBO_WITH_EXAMPLES "Build small example program" OFF)
-if(QCOLORCOMBO_WITH_EXAMPLES)
+if(QColorCombo_WITH_EXAMPLE)
   set(EXAMPLE_SOURCES example.cc ExampleWindow.cc)
   set(EXAMPLE_MOC_HEADERS ExampleWindow.h)
   QT4_WRAP_CPP(EXAMPLE_MOC_SOURCES ${EXAMPLE_MOC_HEADERS})
   add_executable(example ${EXAMPLE_MOC_SOURCES} ${EXAMPLE_SOURCES})
   target_link_libraries(example QColorCombo)
   target_link_libraries(example ${QT_LIBRARIES})
-endif(QCOLORCOMBO_WITH_EXAMPLES)
+endif(QColorCombo_WITH_EXAMPLE)

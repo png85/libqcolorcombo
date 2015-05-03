@@ -11,6 +11,8 @@
 #ifndef QCOLORCOMBO_H
 #define QCOLORCOMBO_H 1
 
+#include <QColorCombo_Export.h>
+
 #include <QWidget>
 #include <QFrame>
 #include <QComboBox>
@@ -27,7 +29,7 @@
  *
  * \version 1.0 Initial implementation
  */
-class QColorCombo : public QFrame {
+class QColorCombo_EXPORT QColorCombo : public QFrame {
     Q_OBJECT
 
     Q_PROPERTY(QColor selectedColor READ selectedColor WRITE setSelectedColor)
