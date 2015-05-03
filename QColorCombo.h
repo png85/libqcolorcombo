@@ -19,7 +19,6 @@
 #include <QColor>
 #include <QIcon>
 
-
 /** \brief Color selection combo box
  *
  * This widget provides a \a QComboBox that can be filled with a list of \a QColor variants
@@ -38,7 +37,7 @@ class QColorCombo_EXPORT QColorCombo : public QFrame {
     Q_PROPERTY(bool allowCustomColors READ allowCustomColors WRITE setAllowCustomColors)
 
 public:
-    QColorCombo(QWidget* parent=0);
+    QColorCombo(QWidget* parent = 0);
 
     /** \brief Get currently selected color
      *
@@ -133,8 +132,6 @@ signals:
      * \param color \a QColor that was selected by the user
      */
     void colorChanged(QColor color);
-
 };
 
 #endif // !QCOLORCOMBO_H
-

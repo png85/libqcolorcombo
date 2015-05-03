@@ -6,15 +6,14 @@
 #include "QColorCombo.h"
 #include "QColorComboDesignerFactory.h"
 
-
-QColorComboDesignerFactory::QColorComboDesignerFactory(QDeclarativeItem *parent) :
-    QObject(parent)
+QColorComboDesignerFactory::QColorComboDesignerFactory(QDeclarativeItem* parent)
+    : QObject(parent)
 {
     // ... nothing ...
 }
 
-
-QWidget* QColorComboDesignerFactory::createWidget(QWidget *parent) {
+QWidget* QColorComboDesignerFactory::createWidget(QWidget* parent)
+{
     QColorCombo* widget = nullptr;
     try {
         widget = new QColorCombo(parent);
@@ -31,36 +30,38 @@ QWidget* QColorComboDesignerFactory::createWidget(QWidget *parent) {
     return reinterpret_cast<QWidget*>(widget);
 }
 
-QString QColorComboDesignerFactory::group() const {
+QString QColorComboDesignerFactory::group() const
+{
     return "#das-system";
 }
 
-
-QIcon QColorComboDesignerFactory::icon() const {
+QIcon QColorComboDesignerFactory::icon() const
+{
     return QIcon::fromTheme("video-display");
 }
 
-
-QString QColorComboDesignerFactory::includeFile() const {
+QString QColorComboDesignerFactory::includeFile() const
+{
     return "QColorCombo.h";
 }
 
-
-QString QColorComboDesignerFactory::toolTip() const {
+QString QColorComboDesignerFactory::toolTip() const
+{
     return tr("Color combo box");
 }
 
-
-QString QColorComboDesignerFactory::whatsThis() const {
+QString QColorComboDesignerFactory::whatsThis() const
+{
     return tr("QComboBox that can be used to select QColor values");
 }
 
-bool QColorComboDesignerFactory::isContainer() const {
+bool QColorComboDesignerFactory::isContainer() const
+{
     return false;
 }
 
-
-QString QColorComboDesignerFactory::name() const {
+QString QColorComboDesignerFactory::name() const
+{
     return "QColorCombo";
 }
 

@@ -6,14 +6,13 @@
 #include <QtDesigner/QDesignerCustomWidgetInterface>
 
 class QColorComboDesignerFactory : public QObject,
-        public QDesignerCustomWidgetInterface
-{
+                                   public QDesignerCustomWidgetInterface {
     Q_OBJECT
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 public:
-    explicit QColorComboDesignerFactory(QDeclarativeItem *parent = 0);
-    
-    virtual QWidget* createWidget(QWidget *parent);
+    explicit QColorComboDesignerFactory(QDeclarativeItem* parent = 0);
+
+    virtual QWidget* createWidget(QWidget* parent);
     virtual QString group() const;
     virtual QIcon icon() const;
     virtual QString includeFile() const;
@@ -23,9 +22,8 @@ public:
     virtual QString whatsThis() const;
 
 signals:
-    
+
 public slots:
-    
 };
 
 #endif // QCOLORCOMBODESIGNERFACTORY_H

@@ -5,15 +5,15 @@
 #include <QFrame>
 
 class ExampleWindow : public QFrame {
-  Q_OBJECT
- public:
-  ExampleWindow(QWidget* parent=0);
+    Q_OBJECT
+public:
+    ExampleWindow(QWidget* parent = 0);
 
- protected slots:
-  void colorChanged(QString colorName);
+protected slots:
+    void colorChanged(QString colorName);
 
- protected:
-  QLabel* m_label;
+protected:
+    QLabel* m_label;
 };
 
 #endif // !EXAMPLEWINDOW_H
