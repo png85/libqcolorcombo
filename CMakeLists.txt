@@ -4,7 +4,7 @@
 project(libqcolorcombo)
 cmake_minimum_required(VERSION 2.8)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 #
 # Enable C++11 for GCC builds
