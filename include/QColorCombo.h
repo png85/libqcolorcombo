@@ -11,13 +11,17 @@
 #ifndef QCOLORCOMBO_H
 #define QCOLORCOMBO_H 1
 
-#include <QColorCombo_Export.h>
-
 #include <QWidget>
 #include <QFrame>
 #include <QComboBox>
 #include <QColor>
 #include <QIcon>
+
+#if (QT_VERSION >= 0x050000)
+#include <QColorCombo5_Export.h>
+#else
+#include <QColorCombo4_Export.h>
+#endif
 
 /** \brief Color selection combo box
  *

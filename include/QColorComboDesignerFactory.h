@@ -9,6 +9,9 @@ class QColorComboDesignerFactory : public QObject,
                                    public QDesignerCustomWidgetInterface {
     Q_OBJECT
     Q_INTERFACES(QDesignerCustomWidgetInterface)
+#if (QT_VERSION >= 0x050000)
+    Q_PLUGIN_METADATA(IID "de.das-system-networks.QColorCombo.DesignerPlugin")
+#endif
 public:
     explicit QColorComboDesignerFactory(QDeclarativeItem* parent = 0);
 

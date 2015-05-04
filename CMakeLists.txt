@@ -39,12 +39,18 @@ option(QColorCombo_BUILD_AS_SUBMODULE "Build QColorCombo as git submodule?" OFF)
 option(QColorCombo_BUILD_SHARED_LIBS "Build QColorCombo as shared library?" ON)
 option(QColorCombo_WITH_DESIGNER_PLUGIN "Build plugin to use QColorCombo with Qt Designer?" ON)
 option(QColorCombo_WITH_EXAMPLE "Build small example program for QColorCombo?" ON)
+option(QColorCombo_ENABLE_QT4 "Build QColorCombo widget for Qt4?" ON)
+option(QColorCombo_ENABLE_QT5 "Build QColorCombo widget for Qt5?" ON)
+
+set(QColorCombo_VERSION_MAJOR 1)
+set(QColorCombo_VERSION_MINOR 1)
+set(QColorCombo_VERSION_PATCH 0)
 
 if(NOT QColorCombo_BUILD_AS_SUBMODULE)
     set(CPACK_PACKAGE_DESCRIPTION "QColorCombo widget for Qt4")
-    set(CPACK_PACKAGE_VERSION_MAJOR 1)
-    set(CPACK_PACKAGE_VERSION_MINOR 0)
-    set(CPACK_PACKAGE_VERSION_PATCH 1)
+    set(CPACK_PACKAGE_VERSION_MAJOR ${QColorCombo_VERSION_MAJOR})
+    set(CPACK_PACKAGE_VERSION_MINOR ${QColorCombo_VERSION_MINOR})
+    set(CPACK_PACKAGE_VERSION_PATCH ${QColorCombo_VERSION_PATCH})
     if(WIN32)
         set(CPACK_GENERATOR "ZIP")
     endif(WIN32)
@@ -61,68 +67,20 @@ else(QColorCombo_BUILD_SHARED_LIBS)
 endif(QColorCombo_BUILD_SHARED_LIBS)
 
 include(GenerateExportHeader)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-#
-# Locate Qt4 headers/libraries
-find_package(Qt4 REQUIRED)
-include(${QT_USE_FILE})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
 
-#
-# libQtColorCombo: library that contains our widget
-set(QCOLORCOMBO_SOURCES QColorCombo.cc)
-set(QCOLORCOMBO_MOC_HEADERS QColorCombo.h)
-set(QCOLORCOMBO_HEADERS ${QCOLORCOMBO_MOC_HEADERS})
-QT4_WRAP_CPP(QCOLORCOMBO_MOC_SOURCES ${QCOLORCOMBO_MOC_HEADERS})
-QT4_CREATE_TRANSLATION(QCOLORCOMBO_QM_FILES_UPDATE ${QCOLORCOMBO_SOURCES} QColorCombo.ts)
-QT4_ADD_TRANSLATION(QCOLORCOMBO_QM_FILES QColorCombo-en_US.ts
-                                         QColorCombo-de_DE.ts)
-add_library(QColorCombo ${LIB_TYPE} ${QCOLORCOMBO_MOC_SOURCES} ${QCOLORCOMBO_SOURCES} ${QCOLORCOMBO_QM_FILES} ${QCOLORCOMBO_QM_FILES_UPDATE})
-if(UNIX AND QColorCombo_BUILD_SHARED_LIBS)
-    set_target_properties(QColorCombo PROPERTIES SONAME "QColorCombo" SOVERSION ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR})
-endif(UNIX AND QColorCombo_BUILD_SHARED_LIBS)
-target_link_libraries(QColorCombo ${QT_LIBRARIES})
-generate_export_header(QColorCombo BASE_NAME QColorCombo
-                                   EXPORT_MACRO_NAME QColorCombo_EXPORT
-                                   EXPORT_FILE_NAME QColorCombo_Export.h
-                                   STATIC_DEFINE QColorCombo_BUILT_AS_STATIC)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/QColorCombo_Export.h DESTINATION include)
-install(TARGETS QColorCombo ARCHIVE DESTINATION lib
-                            LIBRARY DESTINATION lib
-                            RUNTIME DESTINATION bin)
-install(FILES ${QCOLORCOMBO_HEADERS} DESTINATION include)
-install(FILES ${QCOLORCOMBO_QM_FILES} DESTINATION translations)
-install(FILES ${QCOLORCOMBO_QM_FILES_UPDATE} DESTINATION translations)
+if(NOT QColorCombo_ENABLE_QT4 AND NOT QColorCombo_ENABLE_QT5)
+    message(ERROR "You have to select at least one of Qt4/5!")
+endif(NOT QColorCombo_ENABLE_QT4 AND NOT QColorCombo_ENABLE_QT5)
 
-#
-# QColorComboPlugin: Qt Designer plugin to use QColorCombo in .ui files
-if(QColorCombo_WITH_DESIGNER_PLUGIN)
-  add_definitions(${QT_DEFINITIONS})
-  add_definitions(-DQT_PLUGIN)
-  add_definitions(-DQT_SHARED)
-  if(WIN32)
-    add_definitions(-DQT_DLL)
-  endif(WIN32)
-  set(libQColorComboPlugin_MOC_HDRS QColorComboDesignerFactory.h)
-  set(libQColorComboPlugin_SRCS QColorComboDesignerFactory.cc)
-  qt4_wrap_cpp(libQColorComboPlugin_MOC_SRCS ${libQColorComboPlugin_MOC_HDRS})
-  QT4_CREATE_TRANSLATION(libQColorComboPlugin_QM_SRCS_UPDATE ${libQColorComboPlugin_SRCS} QColorComboPlugin.ts)
-  QT4_ADD_TRANSLATION(libQColorComboPlugin_QM_SRCS QColorComboPlugin-en_US.ts QColorComboPlugin-de_DE.ts)
-  add_library(QColorComboPlugin SHARED ${libQColorComboPlugin_MOC_SRCS} ${libQColorComboPlugin_SRCS} ${libQColorComboPlugin_QM_SRCS} ${libQColorComboPlugin_QM_SRCS_UPDATE})
-  target_link_libraries(QColorComboPlugin QColorCombo ${QT_LIBRARIES})
-  install(TARGETS QColorComboPlugin ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
-  install(FILES ${libQColorComboPlugin_QM_SRCS} DESTINATION translations)
-  install(FILES ${libQColorComboPlugin_QM_SRCS_UPDATE} DESTINATION translations)
-  install(TARGETS QColorComboPlugin DESTINATION ${QT_PLUGINS_DIR}/designer)
-endif(QColorCombo_WITH_DESIGNER_PLUGIN)
+if(QColorCombo_ENABLE_QT4)
+    add_subdirectory(QColorCombo4)
+endif(QColorCombo_ENABLE_QT4)
+if(QColorCombo_ENABLE_QT5)
+    add_subdirectory(QColorCombo5)
+endif(QColorCombo_ENABLE_QT5)
 
-#
-# example: Simple example program to demonstrate QColorCombo
-if(QColorCombo_WITH_EXAMPLE)
-  set(EXAMPLE_SOURCES example.cc ExampleWindow.cc)
-  set(EXAMPLE_MOC_HEADERS ExampleWindow.h)
-  QT4_WRAP_CPP(EXAMPLE_MOC_SOURCES ${EXAMPLE_MOC_HEADERS})
-  add_executable(example ${EXAMPLE_MOC_SOURCES} ${EXAMPLE_SOURCES})
-  target_link_libraries(example QColorCombo)
-  target_link_libraries(example ${QT_LIBRARIES})
-endif(QColorCombo_WITH_EXAMPLE)
+install(FILES include/QColorCombo.h DESTINATION include)
