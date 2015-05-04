@@ -4,12 +4,12 @@
 <context>
     <name>QColorComboDesignerFactory</name>
     <message>
-        <location filename="QColorComboDesignerFactory.cc" line="25"/>
+        <location filename="QColorComboDesignerFactory.cc" line="24"/>
         <source>Caught exception when trying to create new QColorComboinstance in %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="QColorComboDesignerFactory.cc" line="27"/>
+        <location filename="QColorComboDesignerFactory.cc" line="26"/>
         <source>Out of memory</source>
         <translation type="unfinished"></translation>
     </message>
