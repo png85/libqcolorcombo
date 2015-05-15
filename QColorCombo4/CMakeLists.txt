@@ -11,6 +11,8 @@ if(Qt4_FOUND AND QColorCombo_ENABLE_QT4)
     endif(WIN32)
     add_library(${QColorCombo_LIBRARY} ${LIB_TYPE} ../src/QColorCombo.cc ../include/QColorCombo.h)
     target_link_libraries(${QColorCombo_LIBRARY} Qt4::QtGui Qt4::QtCore)
+    target_compile_features(${QColorCombo_LIBRARY} PRIVATE cxx_auto_type
+                                                           cxx_range_for)
     if(UNIX AND QColorCombo_BUILD_SHARED_LIBS)
         set_target_properties(${QColorCombo_LIBRARY} PROPERTIES SONAME "QColorCombo4"
                                                        VERSION ${QColorCombo_VERSION_MAJOR}.${QColorCombo_VERSION_MINOR}

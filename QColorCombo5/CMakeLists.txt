@@ -11,6 +11,8 @@ if(Qt5Widgets_FOUND AND QColorCombo_ENABLE_QT5)
         set(QColorCombo_LIBRARY QBrowseButton5)
     endif(WIN32)
     add_library(${QColorCombo_LIBRARY} ${LIB_TYPE} ../src/QColorCombo.cc ../include/QColorCombo.h)
+    target_compile_features(${QColorCombo_LIBRARY} PRIVATE cxx_auto_type
+                                                           cxx_range_for)
     qt5_use_modules(${QColorCombo_LIBRARY} Widgets)
     if(UNIX AND QColorCombo_BUILD_SHARED_LIBS)
         set_target_properties(${QColorCombo_LIBRARY} PROPERTIES SONAME "QColorCombo5"

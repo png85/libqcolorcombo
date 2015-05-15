@@ -161,7 +161,7 @@ void QColorCombo::setColors(QList<QColor> colors)
     m_combo->clear();
 
     m_colors = colors;
-    foreach (QColor color, m_colors)
+    for (auto& color : m_colors)
         m_combo->addItem(createIcon(color.name()),
                          m_showColorNames == true ? color.name().toUpper() : QString(),
                          color.name());
